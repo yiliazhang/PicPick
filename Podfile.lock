@@ -1,0 +1,67 @@
+PODS:
+  - AFNetworking (3.1.0):
+    - AFNetworking/NSURLSession (= 3.1.0)
+    - AFNetworking/Reachability (= 3.1.0)
+    - AFNetworking/Security (= 3.1.0)
+    - AFNetworking/Serialization (= 3.1.0)
+    - AFNetworking/UIKit (= 3.1.0)
+  - AFNetworking/NSURLSession (3.1.0):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (3.1.0)
+  - AFNetworking/Security (3.1.0)
+  - AFNetworking/Serialization (3.1.0)
+  - AFNetworking/UIKit (3.1.0):
+    - AFNetworking/NSURLSession
+  - FMDB (2.6.2):
+    - FMDB/standard (= 2.6.2)
+  - FMDB/standard (2.6.2)
+  - Masonry (1.0.2)
+  - MBProgressHUD (1.0.0)
+  - MJRefresh (3.1.12)
+  - MLLabel (1.10.3)
+  - MMPopupView (1.7.2):
+    - Masonry
+  - ODRefreshControl (1.2)
+  - STPopup (1.8.2)
+  - SVProgressHUD (2.1.2)
+  - Toast (3.1.0)
+  - TZImagePickerController (1.7.9)
+  - UITextView+Placeholder (1.2.0)
+  - YLGIFImage (0.11)
+
+DEPENDENCIES:
+  - AFNetworking
+  - FMDB
+  - MBProgressHUD
+  - MJRefresh
+  - MLLabel
+  - MMPopupView
+  - ODRefreshControl
+  - STPopup
+  - SVProgressHUD
+  - Toast
+  - TZImagePickerController
+  - UITextView+Placeholder
+  - YLGIFImage
+
+SPEC CHECKSUMS:
+  AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
+  FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
+  Masonry: 7c429b56da9d4ee0bbb3ed77a5ea710d6a5df39e
+  MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
+  MJRefresh: b96cdb21c4aa75a7b07654311ab2f315c497e806
+  MLLabel: 3760fb38aeac53b212409b634bc4aa4bf39ab628
+  MMPopupView: fe1dd010824029dfb632fdf1a531db5dd5386020
+  ODRefreshControl: 907e6149d72dde488d5917ccfabee5bd8d711a20
+  STPopup: b69b3e7484ef7d2baec5f9ab2939f8a7bcdfe218
+  SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
+  Toast: 14a93686d6c8bfe2727afd342414e35660a8a1f3
+  TZImagePickerController: 0a8ff228d287ebdd7d485e8c42a2a932894f1fba
+  UITextView+Placeholder: 77680995fcdd07c3f52ec92fe1150874a2ac89ff
+  YLGIFImage: c0ae132fe80e5282b2762a97d14e23ba71a748ae
+
+PODFILE CHECKSUM: 4cd7c4d40cb9115f24399aa1c630cc5228702604
+
+COCOAPODS: 1.2.1
