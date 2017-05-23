@@ -120,6 +120,7 @@
 		180AA3F01EBC753A006CA690 /* DFLikeCommentToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 180AA3C21EBC753A006CA690 /* DFLikeCommentToolbar.m */; };
 		180AA3F11EBC753A006CA690 /* DFLikeCommentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 180AA3C51EBC753A006CA690 /* DFLikeCommentView.m */; };
 		180AA3F21EBC753A006CA690 /* MLClickColorLinkLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 180AA3C71EBC753A006CA690 /* MLClickColorLinkLabel.m */; };
+		18258AFB1ED029F000E78258 /* GTMBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = 18258AF91ED029F000E78258 /* GTMBase64.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		18AC0F331EBC2304009A42D8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 18AC0F321EBC2304009A42D8 /* main.m */; };
 		18AC0F361EBC2304009A42D8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 18AC0F351EBC2304009A42D8 /* AppDelegate.m */; };
 		18AC0F391EBC2304009A42D8 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18AC0F381EBC2304009A42D8 /* ViewController.m */; };
@@ -336,6 +337,9 @@
 		180AA3C51EBC753A006CA690 /* DFLikeCommentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFLikeCommentView.m; sourceTree = "<group>"; };
 		180AA3C61EBC753A006CA690 /* MLClickColorLinkLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MLClickColorLinkLabel.h; sourceTree = "<group>"; };
 		180AA3C71EBC753A006CA690 /* MLClickColorLinkLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MLClickColorLinkLabel.m; sourceTree = "<group>"; };
+		18258AF81ED029F000E78258 /* GTMBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMBase64.h; sourceTree = "<group>"; };
+		18258AF91ED029F000E78258 /* GTMBase64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMBase64.m; sourceTree = "<group>"; };
+		18258AFA1ED029F000E78258 /* GTMDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GTMDefines.h; sourceTree = "<group>"; };
 		18AC0F2E1EBC2304009A42D8 /* PicPick.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PicPick.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		18AC0F321EBC2304009A42D8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		18AC0F341EBC2304009A42D8 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -903,9 +907,20 @@
 			path = LikeCommentView;
 			sourceTree = "<group>";
 		};
+		18258AF71ED029F000E78258 /* GTMBase64-master */ = {
+			isa = PBXGroup;
+			children = (
+				18258AF81ED029F000E78258 /* GTMBase64.h */,
+				18258AF91ED029F000E78258 /* GTMBase64.m */,
+				18258AFA1ED029F000E78258 /* GTMDefines.h */,
+			);
+			path = "GTMBase64-master";
+			sourceTree = "<group>";
+		};
 		18AC0F251EBC2304009A42D8 = {
 			isa = PBXGroup;
 			children = (
+				18258AF71ED029F000E78258 /* GTMBase64-master */,
 				180AA36F1EBC753A006CA690 /* DFTimelineView */,
 				180AA2AB1EBC7444006CA690 /* DFCommon */,
 				180AA2931EBC743E006CA690 /* MJPhotoBrowser */,
@@ -1237,6 +1252,7 @@
 				180AA3E21EBC753A006CA690 /* DFUserTimeLineViewController.m in Sources */,
 				18AC0F361EBC2304009A42D8 /* AppDelegate.m in Sources */,
 				180AA2A71EBC743E006CA690 /* MJPhotoLoadingView.m in Sources */,
+				18258AFB1ED029F000E78258 /* GTMBase64.m in Sources */,
 				180AA3D11EBC753A006CA690 /* DFFaceManager.m in Sources */,
 				180AA34D1EBC7444006CA690 /* DFReachabilityUtil.m in Sources */,
 				180AA34F1EBC7444006CA690 /* DFImageHelper.m in Sources */,

@@ -10,7 +10,7 @@
 #import "DFPlainGridImageView.h"
 #import "MJPhotoBrowser.h"
 #import "MJPhoto.h"
-
+#import "GTMBase64.h"
 #import "MMPopupItem.h"
 #import "MMSheetView.h"
 #import "MMPopupWindow.h"
@@ -166,62 +166,135 @@ typedef void(^ResultPath)(NSString *filePath, NSString *fileName);
 - (void)startSendAssets:(NSMutableArray *)assets message:(NSString *)message isVideo:(BOOL)isVideo {
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     
-    manager.requestSerializer = [AFHTTPRequestSerializer new];
-    [manager.requestSerializer setQueryStringSerializationWithBlock:^NSString * _Nonnull(NSURLRequest * _Nonnull request, __kindof NSString *parameters, NSError * _Nullable __autoreleasing * _Nullable error) {
-        return [NSString stringWithFormat:@"ak=xxx&sn=xxx&form=%@",parameters];
-    }];
-    
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    [manager.responseSerializer setAcceptableContentTypes:[NSSet setWithObjects:@"application/x-www-form-urlencoded", @"application/json",@"encoding=utf-8",  @"text/html", nil]];
+//    manager.requestSerializer = [AFHTTPRequestSerializer new];
+//    [manager.requestSerializer setQueryStringSerializationWithBlock:^NSString * _Nonnull(NSURLRequest * _Nonnull request, __kindof NSString *parameters, NSError * _Nullable __autoreleasing * _Nullable error) {
+//        return [NSString stringWithFormat:@"ak=xxx&sn=xxx&form=%@",parameters];
+//    }];
+//    
+//    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+//    [manager.responseSerializer setAcceptableContentTypes:[NSSet setWithObjects:@"application/x-www-form-urlencoded", @"application/json",@"encoding=utf-8",  @"text/html", nil]];
     manager.requestSerializer.timeoutInterval = 30.f;
     
     
     
     NSString *fileType = isVideo ? @"video" : @"image";
     
-    NSDictionary *params = @{@"filetype": fileType,
+        /*
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary: @{@"filetype": fileType,
                              @"teacherid":@33,
                                @"classid":@11,
                                  @"content":message
-                             };
+                             }];
+    
+
+    if (isVideo) {
+        [DFImagesSendViewController getVideoPathFromPHAsset:assets[0] Complete:^(NSString *filePath, NSString *fileName) {
+            NSURL *url = [NSURL fileURLWithPath:filePath];
+            NSData *data = [NSData dataWithContentsOfURL:url];
+//            NSString *fileString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            NSString *dataStr = [GTMBase64 stringByEncodingData:data];
+            params[@"file"] = dataStr;
+//            params[@"file"] = @"123.mp4";
+//        }];
+        }];
+    } else {
+        for (int i = 0; i < assets.count; i++) {
+            [DFImagesSendViewController getImageFromPHAsset:assets[i] Complete:^(NSData *fileData, NSString *fileName) {
+                NSString *fileKey = [NSString stringWithFormat:@"file%d",i];
+                UIImage *image = [UIImage imageWithData: fileData];
+                NSData *newData = UIImageJPEGRepresentation(image, 0.1);
+                NSString *dataStr = [GTMBase64 stringByEncodingData:newData];
+                params[fileKey] = dataStr;
+            }];
+        }
+        
+    }
+    */
     
     [SVProgressHUD showProgress:0 status:@"0%"];
     
+//--------------------------------------------------------------------
+    NSLog(@"home:%@", NSHomeDirectory());
     [manager POST:@"http://101.200.228.98:8080/kindergarten/app/class/dynamic/add"
- parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+ parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+     [formData appendPartWithFormData:[@"33" dataUsingEncoding:NSUTF8StringEncoding] name:@"teacherid"];
+     [formData appendPartWithFormData:[@"11" dataUsingEncoding:NSUTF8StringEncoding] name:@"classid"];
+     [formData appendPartWithFormData:[message dataUsingEncoding:NSUTF8StringEncoding] name:@"content"];
+     [formData appendPartWithFormData:[fileType dataUsingEncoding:NSUTF8StringEncoding] name:@"filetype"];
+     
      if (assets.count > 0) {
          if (_isVideo) {
              [DFImagesSendViewController getVideoPathFromPHAsset:assets[0] Complete:^(NSString *filePath, NSString *fileName) {
                  NSURL *url = [NSURL fileURLWithPath:filePath];
-                 [formData appendPartWithFileURL:url name:@"file" error:nil];
-             }];
+                 NSData *data = [NSData dataWithContentsOfURL:url];
+                 [formData appendPartWithFileData:data name:@"file" fileName:fileName mimeType:@"mp4"];
+            }];
          } else {
              for (int i = 0; i < assets.count; i++) {
                  [DFImagesSendViewController getImageFromPHAsset:assets[i] Complete:^(NSData *fileData, NSString *fileName) {
-                     [formData appendPartWithFormData:fileData name:[NSString stringWithFormat:@"file%d",i]];
-                 }];
+                     [formData appendPartWithFileData:fileData name:[NSString stringWithFormat:@"file%d",i] fileName:fileName mimeType:@"jpg"];
+                  }];
              }
          }
      }
  } progress:^(NSProgress * _Nonnull uploadProgress) {
      [SVProgressHUD showProgress:uploadProgress.fractionCompleted status:uploadProgress.localizedDescription];
  } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-     [SVProgressHUD showSuccessWithStatus:@"上传成功"];
-     [self dismissViewControllerAnimated:YES completion:nil];
+     int state = [responseObject[@"state"] intValue];
+      if (state == 0) {
+          NSString *message = responseObject[@"context"];
+          [SVProgressHUD showInfoWithStatus:message];
+      } else {
+          [SVProgressHUD showSuccessWithStatus:@"上传成功"];
+          [self dismissViewControllerAnimated:YES completion:nil];
+      }
  } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
      [SVProgressHUD showInfoWithStatus:@"上传失败"];
  }];
+//--------------------------------------------------------------------
+//        [manager POST:@"http://101.200.228.98:8080/kindergarten/app/class/dynamic/add"
+//           parameters:params
+//             progress:^(NSProgress * _Nonnull uploadProgress) {
+//                 [SVProgressHUD showProgress:uploadProgress.fractionCompleted status:uploadProgress.localizedDescription];
+//             } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+//                 int state = [responseObject[@"state"] intValue];
+//                 if (state == 0) {
+//                     NSString *message = responseObject[@"context"];
+//                     [SVProgressHUD showInfoWithStatus:message];
+//                 } else {
+//                     [SVProgressHUD showSuccessWithStatus:@"上传成功"];
+//                     [self dismissViewControllerAnimated:YES completion:nil];
+//                 }
+//                 
+//             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+//                 [SVProgressHUD showInfoWithStatus:@"上传失败"];
+//             }];
+   
     
+//--------------------------------------------------------------------
+//        [manager POST:@"http://101.200.228.98:8080/kindergarten/app/msg/add"
+//           parameters:@{@"scope": @1,
+//                        @"teacherid": @3,
+//                        @"title": @"9999999",
+//                        @"content": @"77777777",
+//                        @"type": @"notic",
+//                        @"contenttype": @"SECUTITY",
+//                        }
+//             progress:^(NSProgress * _Nonnull uploadProgress) {
+//            [SVProgressHUD showProgress:uploadProgress.fractionCompleted status:uploadProgress.localizedDescription];
+//        } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+//    int state = [responseObject[@"state"] intValue];
+//                 if (state == 0) {
+//                     NSString *message = responseObject[@"context"];
+//                     [SVProgressHUD showInfoWithStatus:message];
+//                 } else {
+//                     [SVProgressHUD showSuccessWithStatus:@"上传成功"];
+//                     [self dismissViewControllerAnimated:YES completion:nil];
+//                 }
+//        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+//            [SVProgressHUD showInfoWithStatus:@"上传失败"];
+//        }];
     
-//    [manager POST:@"http://101.200.228.98:8080/kindergarten/app/class/dynamic/add" parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
-//        [SVProgressHUD showProgress:uploadProgress.fractionCompleted status:uploadProgress.localizedDescription];
-//    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-//        [SVProgressHUD showSuccessWithStatus:@"上传成功"];
-//        [self dismissViewControllerAnimated:YES completion:nil];
-//
-//    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-//        [SVProgressHUD showInfoWithStatus:@"上传失败"];
-//    }];
 }
 + (void)getImageFromPHAsset:(PHAsset *)asset Complete:(Result)result {
     __block NSData *data;
